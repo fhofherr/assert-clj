@@ -6,4 +6,5 @@
 
 (defn run-tests
   []
+  (refresh)
   (t/run-tests 'assert-clj.api-test))
