@@ -1,4 +1,4 @@
-(defproject assert-clj "0.1.0"
+(defproject assert-clj "0.2.0-SNAPSHOT"
   :description "A thin wrapper around AssertJ."
   :url "http://github.com/fhofherr/assert-clj"
   :license {:name "Apache v2 License"
