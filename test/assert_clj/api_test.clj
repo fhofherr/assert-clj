@@ -25,3 +25,16 @@
   (prop/for-all [v gen/any]
                  (= "Hello World"
                     (.descriptionText (api/assert-that v "Hello World")))))
+
+(defspec assert-that-allows-to-store-docstrings-in-vars 10
+  (prop/for-all [v gen/any
+                 s gen/string-ascii]
+                (= s (.descriptionText (api/assert-that v s)))))
+
+(deftest assert-that-fails-if-docstring-var-is-no-string
+  (tc/quick-check
+    10
+    (prop/for-all [v gen/any
+                   s (gen/such-that (comp not string?) gen/any)]
+                  (is (thrown? IllegalArgumentException
+                               (api/assert-that v s))))))

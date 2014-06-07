@@ -1,14 +1,27 @@
 (ns assert-clj.api
   (:import [org.assertj.core.api Assertions]))
 
-(defn- handle-docstring
+(defn handle-docstring
   [[a & as :as assertions]]
-  (if (string? a)
-    `((~(quote describedAs) ~a (make-array String 0))
-      ~@as)
-    assertions))
+  (letfn [(emit-described-as [s]
+            `(~(quote describedAs) ~s (make-array String 0)))
 
-(defn- transform-assertions
+          (emit-cant-resolve [s] 
+            `(throw (IllegalArgumentException.
+                      (format "'%s' does not resolve to a string!" ~s))))
+
+          (resolve-docstring []
+            (cond
+              (string? a) (emit-described-as a)
+              (symbol? a) (emit-described-as
+                            `(if (string? ~a)
+                               ~a
+                               ~(emit-cant-resolve a)))
+              :else a))]
+    `(~(resolve-docstring)
+      ~@as)))
+
+(defn transform-assertions
   [assertions]
   (-> assertions
       (handle-docstring)))
