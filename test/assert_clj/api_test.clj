@@ -11,7 +11,7 @@
 
 (defn is-assertj-assert? [a] (is (instance? Assert a)))
 
-(defn has-description-text
+(defn has-description-text?
   [txt a]
   (is (= txt (.descriptionText a))))
 
@@ -43,7 +43,7 @@
     (tc/quick-check
       10
       (prop/for-all [v gen/any]
-                    (has-description-text "Hello World"
+                    (has-description-text? "Hello World"
                                           (api/assert-that v "Hello World")))))
 
   (testing "storage of docstring in vars"
@@ -51,7 +51,7 @@
       10
       (prop/for-all [v gen/any
                      s gen/string-ascii]
-                    (has-description-text s (api/assert-that v s)))))
+                    (has-description-text? s (api/assert-that v s)))))
 
   (testing "failure if var does not contain string"
     (tc/quick-check
@@ -68,6 +68,6 @@
       (prop/for-all [v gen/any
                      s1 gen/string-ascii
                      s2 gen/string-ascii]
-                    (has-description-text
+                    (has-description-text?
                       (format "%s-%s" s1 s2)
                       (api/assert-that v ["%s-%s" s1 s2]))))))
