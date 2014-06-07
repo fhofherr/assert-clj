@@ -3,8 +3,11 @@
 
 (defn- handle-docstring
   [[a & as :as assertions]]
-  (letfn [(emit-described-as [s]
-            `(~(quote describedAs) ~s (make-array String 0)))
+  (letfn [(emit-described-as
+            ([s]
+             (emit-described-as s []))
+            ([s ss]
+            `(~(quote describedAs) ~s (into-array String ~(vec ss)))))
 
           (emit-cant-resolve [s] 
             `(throw (IllegalArgumentException.
@@ -17,6 +20,7 @@
                             `(if (string? ~a)
                                ~a
                                ~(emit-cant-resolve a)))
+              (vector? a) (emit-described-as (first a) (rest a))
               :else a))]
     `(~(resolve-docstring)
       ~@as)))

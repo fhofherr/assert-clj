@@ -10,6 +10,7 @@
 (def some-actual (gen/return (gen/sample gen/any 1)))
 
 (defn is-assertj-assert? [a] (is (instance? Assert a)))
+
 (defn has-description-text
   [txt a]
   (is (= txt (.descriptionText a))))
@@ -59,4 +60,14 @@
                      s (gen/such-that (comp not string?) gen/any)]
                     (is
                       (thrown? IllegalArgumentException
-                               (api/assert-that v s)))))))
+                               (api/assert-that v s))))))
+
+  (testing "vector of format string with args"
+    (tc/quick-check
+      10
+      (prop/for-all [v gen/any
+                     s1 gen/string-ascii
+                     s2 gen/string-ascii]
+                    (has-description-text
+                      (format "%s-%s" s1 s2)
+                      (api/assert-that v ["%s-%s" s1 s2]))))))
