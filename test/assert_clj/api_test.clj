@@ -25,9 +25,17 @@
     (tc/quick-check
       10
       (prop/for-all [v gen/any]
-                    (api/assert-that v
-                                     (isEqualTo v)
-                                     (isSameAs v))))))
+                    (is (thrown? AssertionError
+                                 (api/assert-that v
+                                                  (isNotEqualTo v)))))))
+
+  (testing "with calling hyphenized assert* methods"
+    (tc/quick-check
+      10
+      (prop/for-all [v gen/any]
+                    (is (thrown? AssertionError
+                                 (api/assert-that v
+                                                  (is-not-equal-to v))))))))
 
 (deftest assert-that-allows-to-add-a-docstring-right-after-the-actual
   (testing "a simple docstring"

@@ -1,7 +1,7 @@
 (ns assert-clj.api
   (:import [org.assertj.core.api Assertions]))
 
-(defn handle-docstring
+(defn- handle-docstring
   [[a & as :as assertions]]
   (letfn [(emit-described-as [s]
             `(~(quote describedAs) ~s (make-array String 0)))
@@ -21,10 +21,26 @@
     `(~(resolve-docstring)
       ~@as)))
 
-(defn transform-assertions
+(defn- de-hyphenize-methods
+  [assertions]
+  (letfn [(de-hyphenize-symbol [s]
+            (-> s
+                (name)
+                (clojure.string/replace #"-\w"
+                                    #(.. %
+                                         (substring 1)
+                                         (toUpperCase)))
+                (symbol)))
+
+          (de-hyphenize-form [[x & xs]]
+            (cons (de-hyphenize-symbol x) xs))]
+    (map de-hyphenize-form assertions)))
+
+(defn- transform-assertions
   [assertions]
   (-> assertions
-      (handle-docstring)))
+      (handle-docstring)
+      (de-hyphenize-methods)))
 
 (defmacro assert-that
   [actual & assertions]
