@@ -8,7 +8,7 @@ A thin clojure wrapper around
 ### Leiningen
 
 ```clojure
-[assert-clj "0.1.0-SNAPSHOT"]
+[assert-clj "0.1.0"]
 ```
 
 ## License
