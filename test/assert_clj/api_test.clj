@@ -20,3 +20,8 @@
                 (api/assert-that v
                                  (isEqualTo v)
                                  (isSameAs v))))
+
+(defspec assert-that-allows-to-add-a-docstring-right-after-the-actual 10
+  (prop/for-all [v gen/any]
+                 (= "Hello World"
+                    (.descriptionText (api/assert-that v "Hello World")))))
