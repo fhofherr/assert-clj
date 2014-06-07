@@ -5,6 +5,10 @@
             :url "http://www.apache.org/licenses/LICENSE-2.0.html"}
   :dependencies [[org.clojure/clojure "1.5.1"]
                  [org.assertj/assertj-core "1.6.1"]]
+  :plugins [[codox "0.8.9"]]
+  :codox {:output-dir "target/codox"
+          :exclude [user]
+          :defaults {:doc/format :markdown}}
   :profiles {:dev {:source-paths ["dev"]
                    :dependencies [[org.clojure/test.check "0.5.8"]
                                   [org.clojure/tools.namespace "0.2.4"]]}})
