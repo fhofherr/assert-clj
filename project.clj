@@ -1,6 +1,8 @@
 (defproject assert-clj "0.2.0-SNAPSHOT"
   :description "A thin wrapper around AssertJ."
   :url "http://github.com/fhofherr/assert-clj"
+  :scm {:name "git"
+        :url "http://github.com/fhofherr/assert-clj"}
   :license {:name "Apache v2 License"
             :url "http://www.apache.org/licenses/LICENSE-2.0.html"}
   :dependencies [[org.clojure/clojure "1.5.1"]
